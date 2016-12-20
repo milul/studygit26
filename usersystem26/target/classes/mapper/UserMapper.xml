@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 命名空间与对应的映射接口的全类名一致 -->
+<mapper namespace="com.yc.us.mapper.UserMapper">
+ 
+	<!-- 定义sql变量 -->
+	<sql id="selectProfile">
+		select * from profile 
+	</sql>
+	<!-- id与方法名一致 --> 
+	<select id="findUser" parameterType="User" resultType="User">
+		<include refid="selectProfile"/> where id=#{id} and name=#{name}		
+	</select>
+	<select id="findAllUser" resultType="User">
+		<include refid="selectProfile"/>	
+	</select>
+	
+	<!-- 结果集映射 -->
+	<!-- 使用嵌套查询 的方式，处理分页-->
+	<resultMap type="PaginationBean" id="PaginationBeanMap">
+		<result column="pageSize" property="pageSize"/>
+		<result column="currPage" property="currPage"/>
+		<collection property="rows" column="{pageSize=pageSize,currPage=currPage}"
+		ofType="User" select="getPaginationUsers"/>
+	</resultMap>
+	<!-- #是采用占位符   $是直接取到值 -->
+	<select id="getUsersByPagination" parameterType="PaginationBean" resultMap="PaginationBeanMap"> 
+		select count(1) total,ceil(count(1)/${pageSize}) totalPage,
+		${pageSize} pageSize,${currPage} currPage from profile
+	</select>
+	
+	<select id="getPaginationUsers" resultType="User">
+		select * from
+		(select n.*,rownum rn from
+		(select * from profile)n where ${pageSize}*${currPage}>=rownum)
+		where rn>(${currPage}-1)*${pageSize}
+	</select>
+	
+	<update id="updateUser" parameterType="User" flushCache="false">
+		update profile set name=#{name},birthday=#{birthday},gender=#{gender},
+		career=#{career},address=#{address},mobile=#{mobile}
+		<if test="picPath!=null">,picPath=#{picPath}</if>
+		where id=#{id}
+	</update>
+	
+	<select id="getUserById" parameterType="int" resultType="User">
+		<include refid="selectProfile"/> where id=#{id} 	
+	</select>
+</mapper>

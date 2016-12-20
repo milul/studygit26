@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 命名空间与对应的映射接口的全类名一致 -->
+<mapper namespace="com.yc.fav.mapper.FavoriteMapper">
+	<insert id="insertFav" parameterType="Favorite">
+		insert into favorite values(seq_favorite.nextval,#{flabel},#{furl},'${ftags}',#{fdesc})
+	</insert>
+	<select id="selectFavbyTName" parameterType="Favorite" resultType="Favorite">
+		select * from favorite 
+		<choose>
+			<when test="ftags == '' "></when>
+			<when test="ftags != null">where ftags like '%${ftags}%'</when>
+			<otherwise>where ftags is null</otherwise>
+		</choose>
+	</select>
+</mapper>
