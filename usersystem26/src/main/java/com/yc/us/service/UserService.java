@@ -12,5 +12,5 @@ public interface UserService {
 	boolean modifyUser(User user);
 
 	User getUserById(String id);
-	
+
 }

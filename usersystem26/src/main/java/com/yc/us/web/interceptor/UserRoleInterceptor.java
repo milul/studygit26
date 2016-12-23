@@ -8,30 +8,29 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yc.us.entity.User;
+
 @Component("urInterceptor")
 public class UserRoleInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
-		User user=(User) request.getSession().getAttribute("loginUser");
-		System.out.println("UserRoleInterceptor==>"+user);
-		if(user.getFlag()==1){
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		User user = (User) request.getSession().getAttribute("loginUser");
+		System.out.println("UserRoleInterceptor==>" + user);
+		if (user.getFlag() == 1) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler,
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 
 	}
 
 	@Override
-	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception ex)
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 
 	}

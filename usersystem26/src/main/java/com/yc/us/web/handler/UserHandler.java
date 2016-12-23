@@ -25,36 +25,36 @@ public class UserHandler {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@RequestMapping("/login")
 	@ResponseBody
-	public boolean login(User user,HttpSession session){
+	public boolean login(User user, HttpSession session) {
 		LogManager.getLogger().debug("请求UserHandler处理login...");
-		user=userService.login(user);
+		user = userService.login(user);
 		session.setAttribute("loginUser", user);
-		return user!=null;
+		return user != null;
 	}
-	
+
 	@RequestMapping("/list")
 	@ResponseBody
-	public PaginationBean<User> list(String page,String rows){
+	public PaginationBean<User> list(String page, String rows) {
 		LogManager.getLogger().debug("请求UserHandler处理list...");
-		return userService.getPartUsers(page,rows);
+		return userService.getPartUsers(page, rows);
 	}
-	
+
 	@RequestMapping("/modify")
 	@ResponseBody
-	public boolean modify(User user,@RequestParam(name="picData",required=false)MultipartFile picData){
+	public boolean modify(User user, @RequestParam(name = "picData", required = false) MultipartFile picData) {
 		LogManager.getLogger().debug("请求UserHandler处理modify...");
-		if(picData!=null && !picData.isEmpty()){
+		if (picData != null && !picData.isEmpty()) {
 			try {
-				picData.transferTo(new File(ServletUtil.UPLOAD_DIR,picData.getOriginalFilename())); //上传文件
-				user.setPicPath("/"+ServletUtil.UPLOAD_DIR_NAME+"/"+picData.getOriginalFilename());
+				picData.transferTo(new File(ServletUtil.UPLOAD_DIR, picData.getOriginalFilename())); // 上传文件
+				user.setPicPath("/" + ServletUtil.UPLOAD_DIR_NAME + "/" + picData.getOriginalFilename());
 			} catch (IllegalStateException | IOException e) {
-				LogManager.getLogger().error("上传文件操作失败...",e);
-			} 
+				LogManager.getLogger().error("上传文件操作失败...", e);
+			}
 		}
 		return userService.modifyUser(user);
 	}
-	
+
 }

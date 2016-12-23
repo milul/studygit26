@@ -18,35 +18,36 @@ import org.apache.logging.log4j.LogManager;
 @WebFilter("/*")
 public class UserCheckFilter implements Filter {
 
-    
 	public void destroy() {
 	}
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		//做用户校验处理
-		String reqUriStr=((HttpServletRequest)request).getRequestURI();
-		if(reqUriStr.endsWith("list.jsp")){
-		HttpSession session=((HttpServletRequest)request).getSession();
-		Object obj=session.getAttribute("loginUser");
-		System.out.println("UserCheckFilter==>"+obj);
-		if(obj==null){
-			 ((HttpServletResponse)response).sendRedirect("/usersystem26/page/login.jsp");
-		}else{
-			chain.doFilter(request, response);
-		}
-		}else{
+
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		// 做用户校验处理
+		String reqUriStr = ((HttpServletRequest) request).getRequestURI();
+		if (reqUriStr.endsWith("list.jsp")) {
+			HttpSession session = ((HttpServletRequest) request).getSession();
+			Object obj = session.getAttribute("loginUser");
+			System.out.println("UserCheckFilter==>" + obj);
+			if (obj == null) {
+				((HttpServletResponse) response).sendRedirect("/usersystem26/page/login.jsp");
+			} else {
+				chain.doFilter(request, response);
+			}
+		} else {
 			chain.doFilter(request, response);
 		}
 	}
 
-	/*public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpSession session=((HttpServletRequest)request).getSession();
-		Object obj=session.getAttribute("user");
-		if(obj==null){
-			 ((HttpServletResponse)response).sendRedirect("/usersystem26/page/login.jsp");
-		}else{
-			chain.doFilter(request, response);
-		}
-	}*/
+	/*
+	 * public void doFilter(ServletRequest request, ServletResponse response,
+	 * FilterChain chain) throws IOException, ServletException { HttpSession
+	 * session=((HttpServletRequest)request).getSession(); Object
+	 * obj=session.getAttribute("user"); if(obj==null){
+	 * ((HttpServletResponse)response).sendRedirect(
+	 * "/usersystem26/page/login.jsp"); }else{ chain.doFilter(request,
+	 * response); } }
+	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		LogManager.getLogger().debug("初始化用户校验的过滤器处理UserCheckFilter...");
 	}

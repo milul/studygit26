@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 
 /**
  * 做filter的适配类
+ * 
  * @author Administrator
  *
  */
