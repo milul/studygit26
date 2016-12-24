@@ -9,14 +9,14 @@
 </head>
 <body>
 	<form action="">
-		<input name="userName" type="text" placeholder="用户名"/><br>
-		<input name="email" type="text" placeholder="email"/><br>
+		<input id="userName" name="userName" type="text" placeholder="用户名"/><br>
+		<input id="email" name="email" type="text" placeholder="email"/><br>
 		<input type="button" value="找回密码" onclick="forget(this)"/>
 	</form>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript"  >
 		function forget(obj){
-			$.get("user/forget", function(data) {
+			$.get("user/forget?username="+$("#userName").val()+"&email="+$("#email").val(), function(data) {
 				
 			},"json")
 		}

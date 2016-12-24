@@ -20,7 +20,7 @@
 	<!-- <aop:aspectj-autoproxy/> 自动切入 -->
 	
 	<!-- 引入外部文件 -->
-	<context:property-placeholder location="classpath:db.properties" /> 
+	<context:property-placeholder location="classpath:data.properties" /> 
 	
 	<!-- 手动配置spring容器中的bean -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
@@ -39,6 +39,19 @@
 		<!-- <property name="typeAliasesPackage" value="com.yc.spring.entity"/>
 		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/> -->
 	</bean>
+	
+	<!-- 邮件处理 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${mail.smtp.host}"/>
+        <property name="username" value="${mail.smtp.username}"/>
+        <property name="password" value="${mail.smtp.password}"/> 
+        <property name="javaMailProperties" >
+        	<props>
+        		<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+        		<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+        	</props>
+        </property>
+    </bean>
 	
 	<!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.yc.spring.mapper"/>
