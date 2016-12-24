@@ -18,18 +18,24 @@ public class UserHandler {
 	private JavaMailSender mailSender;
 	
 	@RequestMapping("/forget")
-	public String forget(String username,String email) throws MessagingException{
+	public String forget(String username,String email){
 		LogManager.getLogger().debug("请求UserHandler进行gorget的基本操作");
 		LogManager.getLogger().debug("请求username:" + username + ",email:" + email);
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		// use the true flag to indicate you need a multipart message
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setTo(email);
-		helper.setSubject("找回密码");
-		helper.setText("<html><body><a href=' '>获得新密码</a></body></html>", true);
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			helper.setTo(email);
+			helper.setFrom("15573481252@163.com");
+			helper.setSubject("找回密码");
+			helper.setText("<html><body><a href=' '>获得新密码</a></body></html>", true);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mailSender.send(message);
 		
-		return "redirect:/forgetSuccess.jsp";
+		return "redirect:forgetSuccess";
 	}
 }
