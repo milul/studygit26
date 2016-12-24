@@ -14,7 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+@Controller		//控制
 @RequestMapping("/user")
 public class UserHandler {
 
